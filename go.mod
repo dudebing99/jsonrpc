@@ -1,6 +1,6 @@
-module github.com/ybbus/jsonrpc/v3
+module github.com/dudebing99/jsonrpc
 
-go 1.21
+go 1.23
 
 require github.com/stretchr/testify v1.8.4
 

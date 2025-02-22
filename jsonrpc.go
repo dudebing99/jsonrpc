@@ -206,6 +206,7 @@ type RPCResponse struct {
 	Result  interface{} `json:"result,omitempty"`
 	Error   *RPCError   `json:"error,omitempty"`
 	ID      int         `json:"id"`
+	Method  string      `json:"method"`
 }
 
 // RPCError represents a JSON-RPC error object if an RPC error occurred.
@@ -233,7 +234,7 @@ func (e *RPCError) Error() string {
 // An error of type HTTPError is returned when a HTTP error occurred (status code)
 // and the body could not be parsed to a valid RPCResponse object that holds a RPCError.
 //
-// Otherwise a RPCResponse object is returned with a RPCError field that is not nil.
+// Otherwise, a RPCResponse object is returned with a RPCError field that is not nil.
 type HTTPError struct {
 	Code int
 	err  error

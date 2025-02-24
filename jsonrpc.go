@@ -621,6 +621,10 @@ func Params(params ...interface{}) interface{} {
 //
 // If result was not an integer an error is returned.
 func (RPCResponse *RPCResponse) GetInt() (int64, error) {
+	if RPCResponse.Error != nil {
+		return 0, RPCResponse.Error
+	}
+
 	val, ok := RPCResponse.Result.(json.Number)
 	if !ok {
 		return 0, fmt.Errorf("could not parse int64 from %s", RPCResponse.Result)
@@ -636,8 +640,12 @@ func (RPCResponse *RPCResponse) GetInt() (int64, error) {
 
 // GetFloat converts the rpc response to float64 and returns it.
 //
-// If result was not an float64 an error is returned.
+// If result was not a float64 an error is returned.
 func (RPCResponse *RPCResponse) GetFloat() (float64, error) {
+	if RPCResponse.Error != nil {
+		return 0, RPCResponse.Error
+	}
+
 	val, ok := RPCResponse.Result.(json.Number)
 	if !ok {
 		return 0, fmt.Errorf("could not parse float64 from %s", RPCResponse.Result)
@@ -655,6 +663,10 @@ func (RPCResponse *RPCResponse) GetFloat() (float64, error) {
 //
 // If result was not a bool an error is returned.
 func (RPCResponse *RPCResponse) GetBool() (bool, error) {
+	if RPCResponse.Error != nil {
+		return false, RPCResponse.Error
+	}
+
 	val, ok := RPCResponse.Result.(bool)
 	if !ok {
 		return false, fmt.Errorf("could not parse bool from %s", RPCResponse.Result)
@@ -667,6 +679,9 @@ func (RPCResponse *RPCResponse) GetBool() (bool, error) {
 //
 // If result was not a string an error is returned.
 func (RPCResponse *RPCResponse) GetString() (string, error) {
+	if RPCResponse.Error != nil {
+		return "", RPCResponse.Error
+	}
 	val, ok := RPCResponse.Result.(string)
 	if !ok {
 		return "", fmt.Errorf("could not parse string from %s", RPCResponse.Result)
@@ -679,6 +694,10 @@ func (RPCResponse *RPCResponse) GetString() (string, error) {
 //
 // The function works as you would expect it from json.Unmarshal()
 func (RPCResponse *RPCResponse) GetObject(toType interface{}) error {
+	if RPCResponse.Error != nil {
+		return RPCResponse.Error
+	}
+
 	js, err := json.Marshal(RPCResponse.Result)
 	if err != nil {
 		return err
